@@ -31,7 +31,7 @@ export function App({ location }) {
     if (process.env.NODE_ENV !== 'test') {
       const a = null;
       // eslint-disable-next-line
-      console.log(a.a300);
+      console.log(a.a900);
     }
   }, []);
   return (
