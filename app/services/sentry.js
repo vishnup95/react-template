@@ -4,6 +4,7 @@ import { isLocal } from '@utils';
 
 export function initSentry() {
   if (!isLocal()) {
+    console.log({ SENTRY_RELEASE: process.env.SENTRY_RELEASE });
     Sentry.init({
       release: process.env.SENTRY_RELEASE,
       environment: 'development',
