@@ -19,7 +19,7 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Build
-        run: yarn build
+        run: export SENTRY_RELEASE=${{ github.sha }} && yarn build
       - name: AWS Deploy #5
         uses: jakejarvis/s3-sync-action@v0.5.0
         with:
