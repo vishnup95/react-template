@@ -5,6 +5,7 @@ import { isLocal } from '@utils';
 export function initSentry() {
   if (!isLocal()) {
     Sentry.init({
+      release: process.env.SENTRY_RELEASE,
       environment: 'development',
       dsn: process.env.SENTRY_DSN,
       integrations: [new Integrations.BrowserTracing()],
