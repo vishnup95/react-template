@@ -43,3 +43,4 @@ jobs:
         with:
           environment: ${{steps.vars.outputs.environment_name}}
           sourcemaps: './build'
+          set_commits: 'auto'
