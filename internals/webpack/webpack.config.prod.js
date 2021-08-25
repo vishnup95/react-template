@@ -1,5 +1,6 @@
 // Important modules this config uses
 const path = require('path');
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 const OfflinePlugin = require('@lcdp/offline-plugin');
@@ -78,7 +79,7 @@ module.exports = require('./webpack.config.base')({
     // Put it in the end to capture all the HtmlWebpackPlugin's
     // assets manipulations and do leak its manipulations to HtmlWebpackPlugin
     new OfflinePlugin({
-      relativePaths: process.env.NODE_ENV === 'production',
+      relativePaths: false,
       publicPath: '/',
       appShell: '/',
 
@@ -126,7 +127,7 @@ module.exports = require('./webpack.config.base')({
       ]
     })
   ],
-
+  devtool: 'source-map',
   performance: {
     assetFilter: (assetFilename) => !/(\.map$)|(^(main\.|favicon\.))/.test(assetFilename)
   }

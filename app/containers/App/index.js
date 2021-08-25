@@ -7,7 +7,7 @@
  *
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
@@ -27,6 +27,13 @@ const theme = {
 };
 
 export function App({ location }) {
+  useEffect(() => {
+    if (process.env.NODE_ENV !== 'test') {
+      const a = null;
+      // eslint-disable-next-line
+      console.log(a.a300);
+    }
+  }, []);
   return (
     <ThemeProvider theme={theme}>
       <Header />

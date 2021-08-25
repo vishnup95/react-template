@@ -1,0 +1,44 @@
+name: Upload Source Maps
+on:
+  push:
+    branches:
+      - sentry
+jobs:
+  upload-source-maps:
+    runs-on: ubuntu-latest
+    env:
+      SOURCE_DIR: './build/'
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      PATHS: '/*'
+      AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: yarn
+      - name: Build
+        run: yarn build
+      - name: AWS Deploy #5
+        uses: jakejarvis/s3-sync-action@v0.5.0
+        with:
+          args: --acl public-read --follow-symlink
+      - name: Set env BRANCH
+        run: echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
+      - name: Get environment_name
+        id: vars
+        run: |
+          if [[ $BRANCH == 'master' ]]; then
+              echo ::set-output name=environment_name::production
+          else
+              echo ::set-output name=environment_name::development
+          fi
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: ${{steps.vars.outputs.environment_name}}
+          sourcemaps: './build'
