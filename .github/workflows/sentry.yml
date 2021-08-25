@@ -1,0 +1,26 @@
+name: Upload Source Maps
+on:
+  push:
+    branches: [feat/sentry]
+jobs:
+  upload-source-maps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set env BRANCH
+        run: echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
+      - name: Get environment_name
+        id: vars
+        run: |
+          if [[ $BRANCH == 'master' ]]; then
+              echo ::set-output name=environment_name::production
+          else
+              echo ::set-output name=environment_name::development
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: ${{steps.vars.outputs.environment_name}}

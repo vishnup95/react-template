@@ -7,6 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { translate } from '@components/IntlGlobalProvider/index';
+import { reportError } from '@app/services/sentry';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -20,6 +21,7 @@ class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     console.error(error, errorInfo);
+    reportError(error, errorInfo);
   }
 
   render() {

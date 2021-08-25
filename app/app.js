@@ -32,6 +32,8 @@ import configureStore from './configureStore';
 
 // Import i18n messages
 import { translationMessages } from './i18n';
+import { isLocal } from '@utils';
+import { initSentry } from './services/sentry';
 
 // Create redux store with history
 const initialState = {};
@@ -67,6 +69,8 @@ if (module.hot) {
   });
 }
 
+initSentry();
+
 // Chunked polyfill for browsers without Intl support
 if (!window.Intl) {
   new Promise((resolve) => {
@@ -80,7 +84,8 @@ if (!window.Intl) {
 } else {
   render(translationMessages);
 }
-
+const a = null;
+console.log(a.abc);
 // Install ServiceWorker and AppCache in the end since
 // it's not most important operation and if main code fails,
 // we do not want it installed

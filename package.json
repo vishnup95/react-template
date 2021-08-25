@@ -71,6 +71,8 @@
   "dependencies": {
     "@babel/helper-regex": "^7.10.5",
     "@formatjs/intl-relativetimeformat": "^9.1.6",
+    "@sentry/react": "^6.11.0",
+    "@sentry/tracing": "^6.11.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "12.0.0",
     "antd": "^4.9.3",
